@@ -232,14 +232,14 @@ estaVacia _ = False
 
 --3
 elPrimero :: [a] -> a
-elPrimero (x : xn) = x 
+elPrimero (x : xs) = x
 
 --4
 sinElPrimero :: [a] -> [a]
 sinElPrimero [] = []
-sinElPrimero (x : xn) = xn
+sinElPrimero (x : xs) = xs
 
 --5
 splitHead :: [a] -> (a, [a])
 splitHead [] = error "lista vacía"
-splitHead (x : xn) = (x, xn)
+splitHead (x : xs) = (x, xs)
