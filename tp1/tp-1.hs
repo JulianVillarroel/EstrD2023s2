@@ -124,7 +124,6 @@ implica _ _ = False
 yTambien :: Bool -> Bool -> Bool
 yTambien False _ = False
 yTambien _ False = False
-yTambien True True = True
 
 --d
 oBien :: Bool -> Bool -> Bool
