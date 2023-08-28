@@ -116,9 +116,8 @@ negar False = True
 
 --b
 implica :: Bool -> Bool -> Bool
-implica False _ = True
-implica _ True = True
-implica _ _ = False
+implica True False = False
+implica _ _        = True
 
 --c
 yTambien :: Bool -> Bool -> Bool
