@@ -238,6 +238,7 @@ sinElPrimero [] = []
 sinElPrimero (x : xs) = xs
 
 --5
+--Precondición: La lista no puede ser vacía.
 splitHead :: [a] -> (a, [a])
 splitHead [] = error "lista vacía"
 splitHead (x : xs) = (x, xs)
