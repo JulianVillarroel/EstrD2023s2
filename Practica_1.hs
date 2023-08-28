@@ -231,6 +231,7 @@ estaVacia [] = True
 estaVacia _ = False
 
 --3
+--Precondición: La lista no puede estar vacia.
 elPrimero :: [a] -> a
 elPrimero (x : xs) = x
 
