@@ -130,7 +130,6 @@ yTambien True True = True
 oBien :: Bool -> Bool -> Bool
 oBien True _ = True
 oBien _ True = True
-oBien _ _ = False
 
 
 -- ejercicio 4; 1)
