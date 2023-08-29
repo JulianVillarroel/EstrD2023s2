@@ -12,7 +12,6 @@
 -- ejercicio 2; 1)Numeros enteros
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use list literal" #-}
-import Graphics.Win32 (vK_LAUNCH_MEDIA_SELECT)
 {-# HLINT ignore "Use max" #-}
 -- A
 sucesor :: Int -> Int
