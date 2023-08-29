@@ -112,7 +112,7 @@ estaEnElMedio _ = True
 --a
 negar :: Bool -> Bool
 negar True = False
-negar False = True
+negar _    = True
 
 --b
 implica :: Bool -> Bool -> Bool
