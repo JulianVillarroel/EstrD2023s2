@@ -232,8 +232,8 @@ elPrimero :: [a] -> a
 elPrimero (x : xs) = x
 
 --4
+--Precondición: La lista no puede estar vacía.
 sinElPrimero :: [a] -> [a]
-sinElPrimero [] = []
 sinElPrimero (x : xs) = xs
 
 --5
