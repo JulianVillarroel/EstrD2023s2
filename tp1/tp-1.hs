@@ -182,15 +182,23 @@ superaATipo Fuego Planta = True
 superaATipo Planta Agua = True
 superaATipo _ _ = False
 
+
+pepo = ConsPokemon Agua 2
+lola = ConsPokemon Agua 3
+sami = ConsPokemon Planta 5
+
+chalu = ConsPokemon Fuego 1
+ash = ConsEntrenador "ash" pepo lola
+juli = ConsEntrenador "juli" chalu sami
+
 --Devuelve la cantidad de Pokémon de determinado tipo que posee el entrenador.
 cantidadDePokemonDe :: TipoDePokemon -> Entrenador -> Int
-cantidadDePokemonDe t (ConsEntrenador n p1 p2)
-  | sonMismoTipo t (elPokemonEsDeTipo p1) && sonMismoTipo t (elPokemonEsDeTipo p2) = 2
-  | sonMismoTipo t (elPokemonEsDeTipo p1) || sonMismoTipo t (elPokemonEsDeTipo p2) = 1
-  | otherwise = 0
+cantidadDePokemonDe tp (ConsEntrenador nombre p1 p2) = contarTipo tp p1 + contarTipo tp p2
 
-elPokemonEsDeTipo :: Pokemon -> TipoDePokemon
-elPokemonEsDeTipo (ConsPokemon t e) = t
+
+contarTipo :: TipoDePokemon -> Pokemon -> Int
+contarTipo tipoBuscado (ConsPokemon tipo _) = if sonMismoTipo tipo tipoBuscado then 1 else 0
+
 
 sonMismoTipo :: TipoDePokemon -> TipoDePokemon -> Bool
 sonMismoTipo Agua Agua = True
