@@ -2,7 +2,6 @@
 
 -- 1.1) Dada una lista de enteros devuelve la suma de todos sus elementos.
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-import Data.IntMap (size)
 {-# HLINT ignore "Use foldr" #-}
 {-# HLINT ignore "Use map" #-}
 
@@ -84,4 +83,38 @@ en Haskell como reverse.
 reversa :: [a] -> [a]
 reversa []     = []
 reversa (x:xs) = reversa xs ++ [x]
+
+{- 1.14) Dadas dos listas de enteros, devuelve una lista donde el elemento en la posición n es el
+máximo entre el elemento n de la primera lista y de la segunda lista, teniendo en cuenta que
+las listas no necesariamente tienen la misma longitud.
+-}
+zipMaximos :: [Int] -> [Int] -> [Int]
+zipMaximos [] []          = []
+zipMaximos ns []         = ns
+zipMaximos [] bs         = bs
+zipMaximos (n:ns) (b:bs) = max n b : zipMaximos ns bs
+
+-- 1.15) Dada una lista devuelve el mínimo.
+--Precondición: La lista no puede ser vacía.
+--elMinimo :: Ord a => [a] -> a
+--elMinimo  [] = error "No se puede encontrar el mínimo en una lista vacía"
+--elMinimo 
+
+--2 Recursión sobre números
+
+{- 2.1) Dado un número n se devuelve la multiplicación de este número y todos sus 
+anteriores hasta llegar a 0. Si n es 0 devuelve 1. La función es parcial si n es negativo.
+-}
+--Precondición: n solo puede ser números enteros no negativos.
+factorial :: Int -> Int
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+
+{- 2.2) Dado un número n devuelve una lista cuyos elementos sean los números comprendidos entre
+n y 1 (incluidos). Si el número es inferior a 1, devuelve la lista vacía.
+-}
+cuentaRegresiva :: Int -> [Int]
+cuentaRegresiva n < 1    = []
+cuentaRegresiva 1        = [1]
+cuentaRegresiva n  =  n : cuentaRegresiva (n - 1)
 
