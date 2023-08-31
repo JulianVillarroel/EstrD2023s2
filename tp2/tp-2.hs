@@ -47,23 +47,26 @@ pertenece n (x:xs) = x == n || pertenece n xs
 -- 1.8) Dados un elemento e y una lista xs cuenta la cantidad de apariciones de e en xs.
 apariciones :: Eq a => a -> [a] -> Int
 apariciones _ []     = 0
-apariciones e (x:xs) = if e == x 
-                        then 1 + apariciones e xs
-                        else apariciones e xs
+apariciones e (x:xs) = 
+    if e == x 
+        then 1 + apariciones e xs
+        else apariciones e xs
 
 -- 1.9) Dados un número n y una lista xs, devuelve todos los elementos de xs que son menores a n.
 losMenoresA :: Int -> [Int] -> [Int]
 losMenoresA _ []     = []
-losMenoresA n (x:xs) =  if n > x 
-                            then x : losMenoresA n xs
-                            else losMenoresA n xs
+losMenoresA n (x:xs) =  
+    if n > x 
+        then x : losMenoresA n xs
+        else losMenoresA n xs
 
 -- 1.10) Dados un número n y una lista de listas, devuelve la lista de aquellas listas que tienen más de n elementos.
 lasDeLongitudMayorA :: Int -> [[a]] -> [[a]]
 lasDeLongitudMayorA _ []     = []
-lasDeLongitudMayorA n (x:xs) = if length x > n
-                                    then x : lasDeLongitudMayorA n xs
-                                    else lasDeLongitudMayorA n xs
+lasDeLongitudMayorA n (x:xs) = 
+    if length x > n
+        then x : lasDeLongitudMayorA n xs
+        else lasDeLongitudMayorA n xs
 
 -- 1.11) Dados una lista y un elemento, devuelve una lista con ese elemento agregado al fínal de la lista.
 agregarAlFinal :: [a] -> a -> [a]
@@ -89,16 +92,17 @@ máximo entre el elemento n de la primera lista y de la segunda lista, teniendo 
 las listas no necesariamente tienen la misma longitud.
 -}
 zipMaximos :: [Int] -> [Int] -> [Int]
-zipMaximos [] []          = []
+zipMaximos [] []         = []
 zipMaximos ns []         = ns
 zipMaximos [] bs         = bs
 zipMaximos (n:ns) (b:bs) = max n b : zipMaximos ns bs
 
 -- 1.15) Dada una lista devuelve el mínimo.
 --Precondición: La lista no puede ser vacía.
---elMinimo :: Ord a => [a] -> a
---elMinimo  [] = error "No se puede encontrar el mínimo en una lista vacía"
---elMinimo 
+elMinimo :: Ord a => [a] -> a
+elMinimo  []    = error "No se puede encontrar el minimo en una lista vacia"
+elMinimo  [x]   = x
+elMinimo (n:ns) = min n (elMinimo ns)
 
 --2 Recursión sobre números
 
@@ -114,7 +118,236 @@ factorial n = n * factorial (n - 1)
 n y 1 (incluidos). Si el número es inferior a 1, devuelve la lista vacía.
 -}
 cuentaRegresiva :: Int -> [Int]
-cuentaRegresiva n < 1    = []
-cuentaRegresiva 1        = [1]
-cuentaRegresiva n  =  n : cuentaRegresiva (n - 1)
+cuentaRegresiva 0  = []
+cuentaRegresiva n  = 
+    if (n < 1)
+        then cuentaRegresiva 0
+        else n : cuentaRegresiva (n - 1)
+
+--2.3)Dado un número n y un elemento e devuelve una lista en la que el elemento e repite n veces.
+repetir :: Int -> a -> [a]
+repetir 0 _ = []
+repetir n e = e : repetir (n - 1) e
+
+{-2.4)Dados un número n y una lista xs, devuelve una lista con los n primeros elementos de xs.
+Si la lista es vacía, devuelve una lista vacía. 
+-}
+losPrimeros :: Int -> [a] -> [a]
+losPrimeros 0 _      = []
+losPrimeros _ []     = []
+losPrimeros n (x:xs) = x : losPrimeros (n - 1) xs
+
+{-2.5)Dados un número n y una lista xs, devuelve una lista sin los primeros n elementos de lista
+recibida. Si n es cero, devuelve la lista completa.
+-}
+sinLosPrimeros :: Int -> [a] -> [a]
+sinLosPrimeros 0 xs     = xs
+sinLosPrimeros _ []     = []
+sinLosPrimeros n (_:xs) = sinLosPrimeros (n - 1) xs
+
+
+--3) Registros
+
+--3.1)
+data Persona = ConsPersona String Int deriving Show
+
+-- Dados una edad y una lista de personas devuelve a las personas mayores a esa edad.
+mayoresA :: Int -> [Persona] -> [Persona]
+mayoresA _ []           = [] 
+mayoresA edadMin (ConsPersona _ edadPersona : ps) = 
+    if edadPersona > edadMin
+        then ConsPersona "Nombre" edadPersona : mayoresA edadMin ps
+        else mayoresA edadMin ps
+
+--Lista de personas para probar
+personas = [ConsPersona "Carlos" 40, ConsPersona "Maria" 22, ConsPersona "Miguel" 50, ConsPersona "Laura" 16]
+
+
+--Dada una lista de personas devuelve el promedio de edad entre esas personas.
+--Precondición: la lista al menos posee una persona.
+promedioEdad :: [Persona] -> Int
+promedioEdad [] = error "La lista no puede ser vacia"
+promedioEdad xs = div (sumaDeEdades xs) (length xs)
+
+sumaDeEdades :: [Persona] -> Int
+sumaDeEdades [] = 0 
+sumaDeEdades (ConsPersona _ edad : ps) = edad + sumaDeEdades ps
+
+--Dada una lista de personas devuelve la persona más vieja de la lista. 
+--Precondición: la lista al menos posee una persona.
+elMasViejo :: [Persona] -> Persona
+elMasViejo []        = error "La lista no puede ser vacia"
+elMasViejo [alguien] = alguien
+elMasViejo (p : ps)  = 
+    if esMayorQueLaOtra p (elMasViejo ps)
+        then p 
+        else elMasViejo ps
+
+
+
+esMayorQueLaOtra :: Persona -> Persona -> Bool
+esMayorQueLaOtra x b = edad x > edad b
+
+edad :: Persona -> Int
+edad (ConsPersona n b) = b
+
+--3.2)Modificaremos la representación de Entreador y Pokemon de la práctica anterior de la siguiente manera:
+data TipoDePokemon = Agua | Fuego | Planta           deriving Show
+data Pokemon       = ConsPokemon TipoDePokemon Int   deriving Show
+data Entrenador    = ConsEntrenador String [Pokemon] deriving Show
+
+--Devuelve la cantidad de Pokémon que posee el entrenador.
+cantPokemon :: Entrenador -> Int
+cantPokemon (ConsEntrenador _ pokeList) = length pokeList
+
+
+pepo = ConsEntrenador "pepo" [ConsPokemon Agua 30, ConsPokemon Fuego 25, ConsPokemon Planta 44] --Entrenadora para probar
+
+--Devuelve la cantidad de Pokémon de determinado tipo que posee el entrenador.
+cantPokemonDe :: TipoDePokemon -> Entrenador -> Int
+cantPokemonDe tipo (ConsEntrenador _ listaPokemon) = contarTipo tipo listaPokemon
+
+contarTipo :: TipoDePokemon -> [Pokemon] -> Int
+contarTipo _ [] = 0
+contarTipo tipo (ConsPokemon x _ : xs) = 
+    if sonIguales tipo x 
+        then 1 + contarTipo tipo xs 
+        else contarTipo tipo xs
+
+sonIguales :: TipoDePokemon -> TipoDePokemon -> Bool
+sonIguales Agua Agua = True
+sonIguales Fuego Fuego = True
+sonIguales Planta Planta = True
+sonIguales _ _ = False
+
+
+nati = ConsEntrenador "nati" [ConsPokemon Agua 2, ConsPokemon Fuego 1, ConsPokemon Agua 1] -- entrenadora para probar
+
+
+--Dados dos entrenadores, indica la cantidad de Pokemon de cierto tipo, que le ganarían
+--a los Pokemon del segundo entrenador.
+cuantosDeTipo_De_LeGananATodosLosDe_ :: TipoDePokemon -> Entrenador -> Entrenador -> Int
+cuantosDeTipo_De_LeGananATodosLosDe_ _ (ConsEntrenador _ []) _= 0
+cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e (n:ns)) (ConsEntrenador q xs) = 
+    if esDeTipo n tp && superaATodos n xs  
+        then 1 + cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
+        else cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
+
+
+esDeTipo :: Pokemon -> TipoDePokemon -> Bool
+esDeTipo (ConsPokemon tp1 _) tp2 = sonMismoTipo tp1 tp2
+
+superaATodos :: Pokemon -> [Pokemon] -> Bool
+superaATodos _ [] = True
+superaATodos p (n:ns) = superaA p n && (superaATodos p ns)
+
+superaA :: Pokemon -> Pokemon -> Bool
+superaA (ConsPokemon t1 e1) (ConsPokemon t2 e2) = superaATipo t1 t2
+
+superaATipo :: TipoDePokemon -> TipoDePokemon -> Bool
+superaATipo Agua Fuego = True
+superaATipo Fuego Planta = True
+superaATipo Planta Agua = True
+superaATipo _ _ = False
+
+sonMismoTipo :: TipoDePokemon -> TipoDePokemon -> Bool
+sonMismoTipo Agua Agua = True
+sonMismoTipo Fuego Fuego = True
+sonMismoTipo Planta Planta = True
+sonMismoTipo _ _ = False
+
+
+
+-- Dado un entrenador, devuelve True si posee al menos un Pokémon de cada tipo posible.
+esMaestroPokemon :: Entrenador -> Bool
+esMaestroPokemon (ConsEntrenador _ pokemones) = tieneTipo Agua pokemones && tieneTipo Fuego pokemones && tieneTipo Planta pokemones
+
+tieneTipo :: TipoDePokemon -> [Pokemon] -> Bool
+tieneTipo _ [] = False
+tieneTipo tipo (ConsPokemon otroTipo _ : ps) = sonMismoTipo tipo otroTipo || tieneTipo tipo ps
+
+
+-- lista pokemon
+charmander = ConsPokemon Fuego 26
+odish      = ConsPokemon Planta 25
+palkia     = ConsPokemon Agua 24
+rapidash   = ConsPokemon Fuego 33
+
+xime = ConsEntrenador "xime" [charmander, odish, palkia] -- entrenador con todos los tipos
+chalu = ConsEntrenador "chalu" [odish, palkia]            -- entrenador con dos tipos
+sami = ConsEntrenador "sami" [charmander, rapidash]
+
+
+--3.3)
+data Seniority = Junior | SemiSenior | Senior                             deriving Show
+data Proyecto = ConsProyecto String                                       deriving Show
+data Rol = Developer Seniority Proyecto | Management Seniority Proyecto   deriving Show
+data Empresa = ConsEmpresa [Rol]                                          deriving Show
+
+-- Dada una empresa denota la lista de proyectos en los que trabaja, sin elementos repetidos.
+proyectos :: Empresa -> [Proyecto]
+proyectos (ConsEmpresa ns) = sinRepetidos (proyectosDe ns)
+
+sinRepetidos :: [Proyecto] -> [Proyecto]
+sinRepetidos []     = []
+sinRepetidos (n:ns) = 
+    if incluyeProyecto n (sinRepetidos ns)
+        then sinRepetidos ns
+        else n : (sinRepetidos ns)
+
+proyectosDe :: [Rol] -> [Proyecto]
+proyectosDe []     = []
+proyectosDe (n:ns) = proyectoDe_ n : (proyectosDe ns)
+
+proyectoDe_ :: Rol -> Proyecto
+proyectoDe_ (Developer _ n) = n
+proyectoDe_ (Management _ n) = n
+
+incluyeProyecto :: Proyecto -> [Proyecto] -> Bool
+incluyeProyecto _ []     = False
+incluyeProyecto p (n:ns) = esMismoProyecto p n || (incluyeProyecto p ns)
+
+esMismoProyecto :: Proyecto -> Proyecto -> Bool
+esMismoProyecto (ConsProyecto n) (ConsProyecto p)= n == p
+
+--Dada una empresa indica la cantidad de desarrolladores senior que posee, que pertecen
+--además a los proyectos dados por parámetro.
+losDevSenior :: Empresa -> [Proyecto] -> Int
+losDevSenior (ConsEmpresa []) ps = 0
+losDevSenior (ConsEmpresa (x:xs)) ps =
+    if esDevSenior x ps
+        then 1 + (losDevSenior (ConsEmpresa xs) ps)
+        else losDevSenior (ConsEmpresa xs) ps
+
+esDevSenior :: Rol -> [Proyecto] -> Bool
+esDevSenior (Developer s p) ps  = esSenior s && (incluyeProyecto p ps)
+esDevSenior (Management s p) ps = esSenior s && (incluyeProyecto p ps)
+
+esSenior :: Seniority -> Bool
+esSenior Senior = True
+esSenior _      = False
+
+-- Indica la cantidad de empleados que trabajan en alguno de los proyectos dados.
+cantQueTrabajanEn :: [Proyecto] -> Empresa -> Int
+cantQueTrabajanEn [] _                    = 0
+cantQueTrabajanEn (p:ps) (ConsEmpresa rs) = cantidadQueTrabajanEn p rs + (cantQueTrabajanEn ps (ConsEmpresa rs))
+
+cantidadQueTrabajanEn :: Proyecto -> [Rol] -> Int
+cantidadQueTrabajanEn _ [] = 0
+cantidadQueTrabajanEn p (x:xs) = 
+    if  esMismoProyecto p (proyectoDe_ x)
+        then 1 + (cantidadQueTrabajanEn p xs)
+        else cantidadQueTrabajanEn p xs
+
+
+
+-- Devuelve una lista de pares que representa a los proyectos (sin repetir) junto con su
+-- cantidad de personas involucradas.
+asignadosPorProyecto :: Empresa -> [(Proyecto, Int)]
+asignadosPorProyecto (ConsEmpresa rs) = cantidadDeAsignados rs (proyectosDe rs)
+
+cantidadDeAsignados :: [Rol] -> [Proyecto] -> [(Proyecto, Int)]
+cantidadDeAsignados     _   [] = []
+cantidadDeAsignados rs  (p:ps) = (p, cantidadQueTrabajanEn p rs) : (cantidadDeAsignados rs ps)
+
 
