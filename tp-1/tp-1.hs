@@ -116,17 +116,17 @@ negar _    = True
 --b
 implica :: Bool -> Bool -> Bool
 implica True a = a
-implica _ _        = True
+implica _ _    = True
 
 --c
 yTambien :: Bool -> Bool -> Bool
 yTambien True a = a
-yTambien _ _     = False
+yTambien _ _    = False
 
 --d
 oBien :: Bool -> Bool -> Bool
-oBien True _ = True
-oBien _ True = True
+oBien False a = a
+oBien a _     = a
 
 
 -- ejercicio 4; 1)
