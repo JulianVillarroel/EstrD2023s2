@@ -319,12 +319,12 @@ losDevSenior :: Empresa -> [Proyecto] -> Int
 losDevSenior (ConsEmpresa []) ps = 0
 losDevSenior (ConsEmpresa (x:xs)) ps =
     if esDevSenior x ps
-        then 1 + (losDevSenior (ConsEmpresa xs) ps)
+        then 1 + losDevSenior (ConsEmpresa xs) ps
         else losDevSenior (ConsEmpresa xs) ps
 
 esDevSenior :: Rol -> [Proyecto] -> Bool
-esDevSenior (Developer s p) ps  = esSenior s && (incluyeProyecto p ps)
-esDevSenior (Management s p) ps = esSenior s && (incluyeProyecto p ps)
+esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps
+esDevSenior (Management s p) ps = esSenior s && incluyeProyecto p ps
 
 esSenior :: Seniority -> Bool
 esSenior Senior = True
