@@ -339,8 +339,8 @@ cantidadQueTrabajanEn :: Proyecto -> [Rol] -> Int
 cantidadQueTrabajanEn _ [] = 0
 cantidadQueTrabajanEn p (x:xs) =
     if  esMismoProyecto p (proyectoDe_ x)
-        then 1 + cantidadQueTrabajanEn p xs 
-        else cantidadQueTrabajanEn p xs 
+        then 1 + cantidadQueTrabajanEn p xs
+        else cantidadQueTrabajanEn p xs
 
 
 
@@ -351,6 +351,6 @@ asignadosPorProyecto (ConsEmpresa rs) = cantidadDeAsignados rs (proyectosDe rs)
 
 cantidadDeAsignados :: [Rol] -> [Proyecto] -> [(Proyecto, Int)]
 cantidadDeAsignados     _   [] = []
-cantidadDeAsignados rs  (p:ps) = (p, cantidadQueTrabajanEn p rs) : (cantidadDeAsignados rs ps)
+cantidadDeAsignados rs  (p:ps) = (p, cantidadQueTrabajanEn p rs) : cantidadDeAsignados rs ps
 
 
