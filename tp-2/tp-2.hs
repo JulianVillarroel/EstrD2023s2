@@ -92,7 +92,6 @@ máximo entre el elemento n de la primera lista y de la segunda lista, teniendo 
 las listas no necesariamente tienen la misma longitud.
 -}
 zipMaximos :: [Int] -> [Int] -> [Int]
-zipMaximos [] []         = []
 zipMaximos ns []         = ns
 zipMaximos [] bs         = bs
 zipMaximos (n:ns) (b:bs) = max n b : zipMaximos ns bs
