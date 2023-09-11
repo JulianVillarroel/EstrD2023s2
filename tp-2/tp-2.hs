@@ -41,29 +41,29 @@ aplanar (x:xs) = x ++ aplanar xs
 -- 1.7) Dados un elemento e y una lista xs devuelve True si existe un elemento en xs que sea igual a e.
 pertenece :: Eq a => a -> [a] -> Bool
 pertenece n [] = False
-pertenece n (x:xs) = x == n || pertenece n xs 
+pertenece n (x:xs) = x == n || pertenece n xs
 
 
 -- 1.8) Dados un elemento e y una lista xs cuenta la cantidad de apariciones de e en xs.
 apariciones :: Eq a => a -> [a] -> Int
 apariciones _ []     = 0
-apariciones e (x:xs) = 
-    if e == x 
+apariciones e (x:xs) =
+    if e == x
         then 1 + apariciones e xs
         else apariciones e xs
 
 -- 1.9) Dados un número n y una lista xs, devuelve todos los elementos de xs que son menores a n.
 losMenoresA :: Int -> [Int] -> [Int]
 losMenoresA _ []     = []
-losMenoresA n (x:xs) =  
-    if n > x 
+losMenoresA n (x:xs) =
+    if n > x
         then x : losMenoresA n xs
         else losMenoresA n xs
 
 -- 1.10) Dados un número n y una lista de listas, devuelve la lista de aquellas listas que tienen más de n elementos.
 lasDeLongitudMayorA :: Int -> [[a]] -> [[a]]
 lasDeLongitudMayorA _ []     = []
-lasDeLongitudMayorA n (x:xs) = 
+lasDeLongitudMayorA n (x:xs) =
     if length x > n
         then x : lasDeLongitudMayorA n xs
         else lasDeLongitudMayorA n xs
@@ -119,7 +119,7 @@ n y 1 (incluidos). Si el número es inferior a 1, devuelve la lista vacía.
 -}
 cuentaRegresiva :: Int -> [Int]
 cuentaRegresiva 0  = []
-cuentaRegresiva n  = 
+cuentaRegresiva n  =
     if (n < 1)
         then cuentaRegresiva 0
         else n : cuentaRegresiva (n - 1)
@@ -156,8 +156,8 @@ data Persona = ConsPersona String Int deriving Show
 
 -- Dados una edad y una lista de personas devuelve a las personas mayores a esa edad.
 mayoresA :: Int -> [Persona] -> [Persona]
-mayoresA _ []           = [] 
-mayoresA edadMin (ConsPersona _ edadPersona : ps) = 
+mayoresA _ []           = []
+mayoresA edadMin (ConsPersona _ edadPersona : ps) =
     if edadPersona > edadMin
         then ConsPersona "Nombre" edadPersona : mayoresA edadMin ps
         else mayoresA edadMin ps
@@ -173,7 +173,7 @@ promedioEdad [] = error "La lista no puede ser vacia"
 promedioEdad xs = div (sumaDeEdades xs) (length xs)
 
 sumaDeEdades :: [Persona] -> Int
-sumaDeEdades [] = 0 
+sumaDeEdades [] = 0
 sumaDeEdades (ConsPersona _ edad : ps) = edad + sumaDeEdades ps
 
 --Dada una lista de personas devuelve la persona más vieja de la lista. 
@@ -181,9 +181,9 @@ sumaDeEdades (ConsPersona _ edad : ps) = edad + sumaDeEdades ps
 elMasViejo :: [Persona] -> Persona
 elMasViejo []        = error "La lista no puede ser vacia"
 elMasViejo [alguien] = alguien
-elMasViejo (p : ps)  = 
+elMasViejo (p : ps)  =
     if esMayorQueLaOtra p (elMasViejo ps)
-        then p 
+        then p
         else elMasViejo ps
 
 
@@ -212,9 +212,9 @@ cantPokemonDe tipo (ConsEntrenador _ listaPokemon) = contarTipo tipo listaPokemo
 
 contarTipo :: TipoDePokemon -> [Pokemon] -> Int
 contarTipo _ [] = 0
-contarTipo tipo (ConsPokemon x _ : xs) = 
-    if sonIguales tipo x 
-        then 1 + contarTipo tipo xs 
+contarTipo tipo (ConsPokemon x _ : xs) =
+    if sonIguales tipo x
+        then 1 + contarTipo tipo xs
         else contarTipo tipo xs
 
 sonIguales :: TipoDePokemon -> TipoDePokemon -> Bool
@@ -231,8 +231,8 @@ nati = ConsEntrenador "nati" [ConsPokemon Agua 2, ConsPokemon Fuego 1, ConsPokem
 --a los Pokemon del segundo entrenador.
 cuantosDeTipo_De_LeGananATodosLosDe_ :: TipoDePokemon -> Entrenador -> Entrenador -> Int
 cuantosDeTipo_De_LeGananATodosLosDe_ _ (ConsEntrenador _ []) _= 0
-cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e (n:ns)) (ConsEntrenador q xs) = 
-    if esDeTipo n tp && superaATodos n xs  
+cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e (n:ns)) (ConsEntrenador q xs) =
+    if esDeTipo n tp && superaATodos n xs
         then 1 + cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
         else cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
 
@@ -293,14 +293,14 @@ proyectos (ConsEmpresa ns) = sinRepetidos (proyectosDe ns)
 
 sinRepetidos :: [Proyecto] -> [Proyecto]
 sinRepetidos []     = []
-sinRepetidos (n:ns) = 
+sinRepetidos (n:ns) =
     if incluyeProyecto n (sinRepetidos ns)
         then sinRepetidos ns
-        else n : (sinRepetidos ns)
+        else n : sinRepetidos ns
 
 proyectosDe :: [Rol] -> [Proyecto]
 proyectosDe []     = []
-proyectosDe (n:ns) = proyectoDe_ n : (proyectosDe ns)
+proyectosDe (n:ns) = proyectoDe_ n : proyectosDe ns
 
 proyectoDe_ :: Rol -> Proyecto
 proyectoDe_ (Developer _ n) = n
@@ -308,7 +308,7 @@ proyectoDe_ (Management _ n) = n
 
 incluyeProyecto :: Proyecto -> [Proyecto] -> Bool
 incluyeProyecto _ []     = False
-incluyeProyecto p (n:ns) = esMismoProyecto p n || (incluyeProyecto p ns)
+incluyeProyecto p (n:ns) = esMismoProyecto p n || incluyeProyecto p ns
 
 esMismoProyecto :: Proyecto -> Proyecto -> Bool
 esMismoProyecto (ConsProyecto n) (ConsProyecto p)= n == p
@@ -337,7 +337,7 @@ cantQueTrabajanEn (p:ps) (ConsEmpresa rs) = cantidadQueTrabajanEn p rs + (cantQu
 
 cantidadQueTrabajanEn :: Proyecto -> [Rol] -> Int
 cantidadQueTrabajanEn _ [] = 0
-cantidadQueTrabajanEn p (x:xs) = 
+cantidadQueTrabajanEn p (x:xs) =
     if  esMismoProyecto p (proyectoDe_ x)
         then 1 + (cantidadQueTrabajanEn p xs)
         else cantidadQueTrabajanEn p xs
