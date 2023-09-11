@@ -141,6 +141,7 @@ losPrimeros n (x:xs) = x : losPrimeros (n - 1) xs
 
 {-2.5)Dados un número n y una lista xs, devuelve una lista sin los primeros n elementos de lista
 recibida. Si n es cero, devuelve la lista completa.
+--Precondición: n no puede ser un número negativo.
 -}
 sinLosPrimeros :: Int -> [a] -> [a]
 sinLosPrimeros 0 xs     = xs
