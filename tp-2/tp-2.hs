@@ -125,6 +125,7 @@ cuentaRegresiva n  =
         else n : cuentaRegresiva (n - 1)
 
 --2.3)Dado un número n y un elemento e devuelve una lista en la que el elemento e repite n veces.
+--Precondición: n no puede ser un número negativo.
 repetir :: Int -> a -> [a]
 repetir 0 _ = []
 repetir n e = e : repetir (n - 1) e
