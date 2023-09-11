@@ -197,8 +197,11 @@ cantidadDePokemonDe tp (ConsEntrenador nombre p1 p2) = contarTipo tp p1 + contar
 
 
 contarTipo :: TipoDePokemon -> Pokemon -> Int
-contarTipo tipoBuscado (ConsPokemon tipo _) = if sonMismoTipo tipo tipoBuscado then 1 else 0
+contarTipo tipoBuscado (ConsPokemon tipo _) = unoSi (sonMismoTipo tipo tipoBuscado)
 
+unoSi :: Bool -> Int
+unoSi True = 1
+unoSi _    = 0
 
 sonMismoTipo :: TipoDePokemon -> TipoDePokemon -> Bool
 sonMismoTipo Agua Agua = True
