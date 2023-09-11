@@ -131,7 +131,8 @@ repetir 0 _ = []
 repetir n e = e : repetir (n - 1) e
 
 {-2.4)Dados un número n y una lista xs, devuelve una lista con los n primeros elementos de xs.
-Si la lista es vacía, devuelve una lista vacía. 
+Si la lista es vacía, devuelve una lista vacía.
+--Precondición: n no puede ser un número negativo.
 -}
 losPrimeros :: Int -> [a] -> [a]
 losPrimeros 0 _      = []
