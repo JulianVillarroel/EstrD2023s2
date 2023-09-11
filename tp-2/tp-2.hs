@@ -323,8 +323,8 @@ losDevSenior (ConsEmpresa (x:xs)) ps =
         else losDevSenior (ConsEmpresa xs) ps
 
 esDevSenior :: Rol -> [Proyecto] -> Bool
-esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps
-esDevSenior (Management s p) ps = esSenior s && incluyeProyecto p ps
+esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps 
+esDevSenior (Management s p) ps = esSenior s && incluyeProyecto p ps 
 
 esSenior :: Seniority -> Bool
 esSenior Senior = True
