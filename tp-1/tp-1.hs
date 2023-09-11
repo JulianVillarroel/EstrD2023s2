@@ -120,8 +120,8 @@ implica _ _        = True
 
 --c
 yTambien :: Bool -> Bool -> Bool
-yTambien False _ = False
-yTambien _ False = False
+yTambien True a = a
+yTambien _ _     = False
 
 --d
 oBien :: Bool -> Bool -> Bool
