@@ -99,7 +99,6 @@ zipMaximos (n:ns) (b:bs) = max n b : zipMaximos ns bs
 -- 1.15) Dada una lista devuelve el mínimo.
 --Precondición: La lista no puede ser vacía.
 elMinimo :: Ord a => [a] -> a
-elMinimo  []    = error "No se puede encontrar el minimo en una lista vacia"
 elMinimo  [x]   = x
 elMinimo (n:ns) = min n (elMinimo ns)
 
