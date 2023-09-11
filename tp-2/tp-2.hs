@@ -323,8 +323,8 @@ losDevSenior (ConsEmpresa (x:xs)) ps =
         else losDevSenior (ConsEmpresa xs) ps
 
 esDevSenior :: Rol -> [Proyecto] -> Bool
-esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps 
-esDevSenior (Management s p) ps = esSenior s && incluyeProyecto p ps 
+esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps
+esDevSenior (Management s p) ps = esSenior s && incluyeProyecto p ps
 
 esSenior :: Seniority -> Bool
 esSenior Senior = True
@@ -333,13 +333,13 @@ esSenior _      = False
 -- Indica la cantidad de empleados que trabajan en alguno de los proyectos dados.
 cantQueTrabajanEn :: [Proyecto] -> Empresa -> Int
 cantQueTrabajanEn [] _                    = 0
-cantQueTrabajanEn (p:ps) (ConsEmpresa rs) = cantidadQueTrabajanEn p rs + (cantQueTrabajanEn ps (ConsEmpresa rs))
+cantQueTrabajanEn (p:ps) (ConsEmpresa rs) = cantidadQueTrabajanEn p rs + cantQueTrabajanEn ps (ConsEmpresa rs)
 
 cantidadQueTrabajanEn :: Proyecto -> [Rol] -> Int
 cantidadQueTrabajanEn _ [] = 0
 cantidadQueTrabajanEn p (x:xs) =
     if  esMismoProyecto p (proyectoDe_ x)
-        then 1 + (cantidadQueTrabajanEn p xs)
+        then 1 + cantidadQueTrabajanEn p xs
         else cantidadQueTrabajanEn p xs
 
 
