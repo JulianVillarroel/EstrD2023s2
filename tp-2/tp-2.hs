@@ -184,7 +184,6 @@ edadDe (ConsPersona _ e) = e
 --Dada una lista de personas devuelve la persona más vieja de la lista. 
 --Precondición: la lista al menos posee una persona.
 elMasViejo :: [Persona] -> Persona
-elMasViejo []        = error "La lista no puede ser vacia"
 elMasViejo [alguien] = alguien
 elMasViejo (p : ps)  =
     if esMayorQueLaOtra p (elMasViejo ps)
