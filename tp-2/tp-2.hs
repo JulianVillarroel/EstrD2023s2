@@ -327,11 +327,14 @@ esMismoProyecto (ConsProyecto n) (ConsProyecto p)= n == p
 --Dada una empresa indica la cantidad de desarrolladores senior que posee, que pertecen
 --además a los proyectos dados por parámetro.
 losDevSenior :: Empresa -> [Proyecto] -> Int
-losDevSenior (ConsEmpresa []) ps = 0
-losDevSenior (ConsEmpresa (x:xs)) ps =
-    if esDevSenior x ps
-        then 1 + losDevSenior (ConsEmpresa xs) ps
-        else losDevSenior (ConsEmpresa xs) ps
+losDevSenior (ConsEmpresa xs) ps = cantidadDevSenior xs ps 
+
+cantidadDevSenior :: [Rol] -> [Proyecto] -> Int
+cantidadDevSenior [] _        = 0
+cantidadDevSenior (x : xs) ps =
+     if esDevSenior x ps
+        then 1 + cantidadDevSenior xs ps
+        else cantidadDevSenior xs ps
 
 esDevSenior :: Rol -> [Proyecto] -> Bool
 esDevSenior (Developer s p) ps  = esSenior s && incluyeProyecto p ps
