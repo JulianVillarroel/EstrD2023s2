@@ -4,6 +4,8 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use foldr" #-}
 {-# HLINT ignore "Use map" #-}
+{-# HLINT ignore "Use camelCase" #-}
+{-# HLINT ignore "Eta reduce" #-}
 
 sumatoria :: [Int] -> Int
 sumatoria []     = 0
@@ -237,19 +239,24 @@ nati = ConsEntrenador "nati" [ConsPokemon Agua 2, ConsPokemon Fuego 1, ConsPokem
 --Dados dos entrenadores, indica la cantidad de Pokemon de cierto tipo, que le ganarían
 --a los Pokemon del segundo entrenador.
 cuantosDeTipo_De_LeGananATodosLosDe_ :: TipoDePokemon -> Entrenador -> Entrenador -> Int
-cuantosDeTipo_De_LeGananATodosLosDe_ _ (ConsEntrenador _ []) _= 0
-cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e (n:ns)) (ConsEntrenador q xs) =
-    if esDeTipo n tp && superaATodos n xs
-        then 1 + cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
-        else cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador e ns) (ConsEntrenador q xs)
+cuantosDeTipo_De_LeGananATodosLosDe_ tp (ConsEntrenador _ ps) e =  cuantosDeTipoLeGananA ps tp e
 
+cuantosDeTipoLeGananA :: [Pokemon] -> TipoDePokemon -> Entrenador -> Int
+cuantosDeTipoLeGananA [] _ _= 0
+cuantosDeTipoLeGananA (p : ps) tp e = 
+    if esDeTipo p tp && superaATodos p (pokemonesDe e)
+      then 1 + cuantosDeTipoLeGananA ps tp e
+      else cuantosDeTipoLeGananA ps tp e
+
+pokemonesDe :: Entrenador -> [Pokemon] 
+pokemonesDe (ConsEntrenador _ ps) = ps
 
 esDeTipo :: Pokemon -> TipoDePokemon -> Bool
 esDeTipo (ConsPokemon tp1 _) tp2 = sonMismoTipo tp1 tp2
 
 superaATodos :: Pokemon -> [Pokemon] -> Bool
 superaATodos _ [] = True
-superaATodos p (n:ns) = superaA p n && (superaATodos p ns)
+superaATodos p (n:ns) = superaA p n && superaATodos p ns
 
 superaA :: Pokemon -> Pokemon -> Bool
 superaA (ConsPokemon t1 e1) (ConsPokemon t2 e2) = superaATipo t1 t2
