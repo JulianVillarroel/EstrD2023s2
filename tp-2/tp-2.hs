@@ -176,7 +176,10 @@ promedioEdad xs = div (sumaDeEdades xs) (length xs)
 
 sumaDeEdades :: [Persona] -> Int
 sumaDeEdades [] = 0
-sumaDeEdades (ConsPersona _ edad : ps) = edad + sumaDeEdades ps
+sumaDeEdades (p : ps) = edadDe p + sumaDeEdades ps
+
+edadDe :: Persona -> Int 
+edadDe (ConsPersona _ e) = e
 
 --Dada una lista de personas devuelve la persona más vieja de la lista. 
 --Precondición: la lista al menos posee una persona.
