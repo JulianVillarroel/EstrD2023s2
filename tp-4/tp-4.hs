@@ -3,6 +3,8 @@
 -- 1. Pizzas
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use foldr" #-}
+{-# HLINT ignore "Use map" #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
 
 data Pizza = Prepizza
     | Capa Ingrediente Pizza       deriving Show
@@ -50,13 +52,13 @@ esSalsaOQueso _ = False
 
 pizzaSYQ =
   Capa Salsa (
-    Capa Queso 
+    Capa Queso
         Prepizza)
 
 -- Recorre cada ingrediente y si es aceitunas duplica su cantidad
 duplicarAceitunas :: Pizza -> Pizza
 duplicarAceitunas Prepizza    = Prepizza
-duplicarAceitunas (Capa i is) = Capa (duplicarAceituna i) (duplicarAceitunas is) 
+duplicarAceitunas (Capa i is) = Capa (duplicarAceituna i) (duplicarAceitunas is)
 
 duplicarAceituna :: Ingrediente -> Ingrediente
 duplicarAceituna (Aceitunas n) = Aceitunas (n * 2)
@@ -65,30 +67,28 @@ duplicarAceituna i = i
 pizzaDeAceituna =
     Capa Salsa (
         Capa Queso (
-            Capa (Aceitunas 2) 
+            Capa (Aceitunas 2)
                 Prepizza))
-                                           
-                                           
+
+
 
 -- Dada una lista de pizzas devuelve un par donde la primera componente es la cantidad de
 -- ingredientes de la pizza, y la respectiva pizza como segunda componente.
--- cantCapasPorPizza :: [Pizza] -> [(Int, Pizza)]
--- cantCapasPorPizza [] = []
--- cantCapasPorPizza (p:ps) = cantCapasPorCadaPizza p : (cantCapasPorPizza ps)
---  
--- 
--- 
--- cantCapasPorCadaPizza :: Pizza -> (Int,Pizza)
--- cantCapasPorCadaPizza (Capa i is) = unoSi (esIngrediente i) : (cantCapasPorPizza is)
--- 
--- unoSi :: Bool -> Int 
--- unoSi True  = 1
--- unoSi False = 0
--- 
--- esIngrediente :: Ingrediente -> Bool
--- esIngrediente Queso         = True
--- esIngrediente Jamon         = True
--- esIngrediente (Aceitunas _) = True
--- esIngrediente _             = False
+cantCapasPorPizza :: [Pizza] -> [(Int, Pizza)]
+cantCapasPorPizza [] = []
+cantCapasPorPizza (p:ps) = (cantIngredientes p, p) : cantCapasPorPizza ps
+
+cantIngredientes :: Pizza -> Int
+cantIngredientes Prepizza = 0
+cantIngredientes (Capa i is) = 1 + cantIngredientes is
+
+
+-- 2. Mapa de tesoros (con bifurcaciones)
+
+data Dir    = Izq | Der                               deriving Show
+data Objeto = Tesoro | Chatarra                       deriving Show
+data Cofre  = Cofre [Objeto]                          deriving Show
+data Mapa   = Fin Cofre | Bifurcacion Cofre Mapa Mapa deriving Show
+
 
 
