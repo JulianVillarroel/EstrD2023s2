@@ -216,10 +216,13 @@ cantPokemonDe tipo (ConsEntrenador _ listaPokemon) = contarTipo tipo listaPokemo
 
 contarTipo :: TipoDePokemon -> [Pokemon] -> Int
 contarTipo _ [] = 0
-contarTipo tipo (ConsPokemon x _ : xs) =
-    if sonIguales tipo x
+contarTipo tipo (p : xs) =
+    if sonIguales tipo (elTipo p)
         then 1 + contarTipo tipo xs
         else contarTipo tipo xs
+
+elTipo :: Pokemon -> TipoDePokemon 
+elTipo (ConsPokemon a _) = a
 
 sonIguales :: TipoDePokemon -> TipoDePokemon -> Bool
 sonIguales Agua Agua = True
