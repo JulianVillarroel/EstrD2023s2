@@ -6,6 +6,7 @@
 {-# HLINT ignore "Use map" #-}
 {-# HLINT ignore "Use camelCase" #-}
 {-# HLINT ignore "Eta reduce" #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
 
 sumatoria :: [Int] -> Int
 sumatoria []     = 0
@@ -303,18 +304,14 @@ data Empresa = ConsEmpresa [Rol]                                          derivi
 
 -- Dada una empresa denota la lista de proyectos en los que trabaja, sin elementos repetidos.
 proyectos :: Empresa -> [Proyecto]
-proyectos (ConsEmpresa ns) = sinRepetidos (proyectosDe ns)
-
-sinRepetidos :: [Proyecto] -> [Proyecto]
-sinRepetidos []     = []
-sinRepetidos (n:ns) =
-    if incluyeProyecto n (sinRepetidos ns)
-        then sinRepetidos ns
-        else n : sinRepetidos ns
+proyectos (ConsEmpresa ns) = proyectosDe ns
 
 proyectosDe :: [Rol] -> [Proyecto]
 proyectosDe []     = []
-proyectosDe (n:ns) = proyectoDe_ n : proyectosDe ns
+proyectosDe (n:ns) =
+     if incluyeProyecto (proyectoDe_ n) (proyectosDe ns)
+        then proyectosDe ns
+        else proyectoDe_ n : proyectosDe ns 
 
 proyectoDe_ :: Rol -> Proyecto
 proyectoDe_ (Developer _ n) = n
