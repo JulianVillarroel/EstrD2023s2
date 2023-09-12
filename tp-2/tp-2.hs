@@ -154,13 +154,17 @@ data Persona = ConsPersona String Int deriving Show
 
 -- Dados una edad y una lista de personas devuelve a las personas mayores a esa edad.
 mayoresA :: Int -> [Persona] -> [Persona]
-mayoresA _ []           = []
-mayoresA edadMin (ConsPersona _ edadPersona : ps) =
-    if edadPersona > edadMin
-        then ConsPersona "Nombre" edadPersona : mayoresA edadMin ps
+mayoresA _ []            = []
+mayoresA edadMin (p : ps) =
+    if esMayor p edadMin
+        then p : mayoresA edadMin ps
         else mayoresA edadMin ps
 
+esMayor :: Persona -> Int -> Bool
+esMayor (ConsPersona _ a) b = a > b
+
 --Lista de personas para probar
+personas :: [Persona]
 personas = [ConsPersona "Carlos" 40, ConsPersona "Maria" 22, ConsPersona "Miguel" 50, ConsPersona "Laura" 16]
 
 
