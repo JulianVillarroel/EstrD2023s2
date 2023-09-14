@@ -106,7 +106,7 @@ elMinimo  []    = error "No se puede encontrar el minimo en una lista vacia"
 elMinimo (n:ns) = 
     if estaVacia ns 
         then  n
-        else min n (elMinimo ns)
+        else min n (elMinimo ns) 
 
 estaVacia :: [a] -> Bool
 estaVacia [] = True
