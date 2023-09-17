@@ -1,6 +1,8 @@
 -- 1. Tipos recursivos simples
 
 -- 1.1) celdas con bolitas
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Eta reduce" #-}
 
 data Color = Azul | Rojo                       deriving Show
 data Celda = Bolita Color Celda | CeldaVacia   deriving Show
@@ -27,8 +29,7 @@ celdaEjemplo = Bolita Azul (Bolita Rojo (Bolita Azul CeldaVacia))
 
 -- Dado un color y una celda, agrega una bolita de dicho color a la celda.
 poner :: Color -> Celda -> Celda
-poner c CeldaVacia    = Bolita c CeldaVacia
-poner c (Bolita co r) = Bolita co (poner c r)
+poner co c = Bolita co c
 
 -- Dado un color y una celda, quita una bolita de dicho color de la celda. Nota: a diferencia de
 -- Gobstones, esta función es total.
@@ -58,12 +59,12 @@ data Camino = Fin | Cofre [Objeto] Camino | Nada Camino  deriving Show
 -- Indica si hay un cofre con un tesoro en el camino.
 hayTesoro :: Camino -> Bool
 hayTesoro Fin           = False
-hayTesoro (Cofre obs c) = contieneTesoro obs || hayTesoro c 
+hayTesoro (Cofre obs c) = contieneTesoro obs || hayTesoro c
 hayTesoro (Nada c)      = hayTesoro c
 
 contieneTesoro :: [Objeto] -> Bool
 contieneTesoro []       = False
-contieneTesoro (Tesoro : _)  = True 
+contieneTesoro (Tesoro : _)  = True
 contieneTesoro (_ : os) = contieneTesoro os
 
 
@@ -125,19 +126,19 @@ mapDobleT (NodeT a iz de) = NodeT (a * 2) (mapDobleT iz) (mapDobleT de)
 
 
 ejemploDeArbol :: Tree Int
-ejemploDeArbol = NodeT 10 
-                    (NodeT 6 
-                        EmptyT 
-                        EmptyT) 
-                    (NodeT 16 
-                        (NodeT 14 
-                          EmptyT 
-                          EmptyT) 
+ejemploDeArbol = NodeT 10
+                    (NodeT 6
+                        EmptyT
+                        EmptyT)
+                    (NodeT 16
+                        (NodeT 14
+                          EmptyT
+                          EmptyT)
                         EmptyT)
 
 
 ejemploDeArbolSoloConRaiz :: Tree Int
-ejemploDeArbolSoloConRaiz = NodeT 10 
+ejemploDeArbolSoloConRaiz = NodeT 10
                                EmptyT  EmptyT
 
 
@@ -149,9 +150,9 @@ perteneceT a (NodeT b iz de) = b == a  || perteneceT a iz || perteneceT a de
 -- 5. Dados un elemento e y un árbol binario devuelve la cantidad de elementos del árbol que son iguales a e.
 aparicionesT :: Eq a => a -> Tree a -> Int
 aparicionesT _ EmptyT          = 0
-aparicionesT a (NodeT b iz de) = 
-  (if b == a 
-     then 1 
+aparicionesT a (NodeT b iz de) =
+  (if b == a
+     then 1
        else 0) + aparicionesT a iz + aparicionesT a de
 
 -- 6. Dado un árbol devuelve los elementos que se encuentran en sus hojas.
@@ -199,14 +200,14 @@ listPerLevel tree = pasandoPerLevel (heightT tree) tree
 
 pasandoPerLevel :: Int -> Tree a -> [[a]]
 pasandoPerLevel 0 tree = [levelN 0 tree]
-pasandoPerLevel n tree = levelN n tree : pasandoPerLevel (n - 1) tree  
+pasandoPerLevel n tree = levelN n tree : pasandoPerLevel (n - 1) tree
 
 -- 12. Devuelve los elementos de la rama más larga del árbol
 ramaMasLarga :: Tree a -> [a]
 ramaMasLarga EmptyT          = []
-ramaMasLarga (NodeT a iz de) = 
+ramaMasLarga (NodeT a iz de) =
   if heightT iz < heightT de
-    then a : ramaMasLarga de 
+    then a : ramaMasLarga de
     else a : ramaMasLarga iz
 
 
@@ -255,9 +256,9 @@ simplificar (Prod _ (Valor 0)) = Valor 0                                -- b) x 
 simplificar (Prod (Valor 1) e) = simplificar e                          -- c) 1 * x = x
 simplificar (Prod e (Valor 1)) = simplificar e                          -- c) x * 1 = x
 simplificar (Neg (Neg e))      = simplificar e                          -- d) -(-x) = x
-simplificar (Sum e1 e2)        = Sum (simplificar e1) (simplificar e2)  
-simplificar (Prod e1 e2)       = Prod (simplificar e1) (simplificar e2) 
-simplificar (Neg e)            = Neg (simplificar e)                    
+simplificar (Sum e1 e2)        = Sum (simplificar e1) (simplificar e2)
+simplificar (Prod e1 e2)       = Prod (simplificar e1) (simplificar e2)
+simplificar (Neg e)            = Neg (simplificar e)
 simplificar e                  = e                                      -- cualquier otro caso queda igual
 
 
