@@ -254,17 +254,26 @@ notación matemática convencional):
           d) - (- x) = x
 -}
 simplificar :: ExpA -> ExpA
-simplificar (Sum (Valor 0) e)  = simplificar e                          -- a) 0 + x = x
-simplificar (Sum e (Valor 0))  = simplificar e                          -- a) x + 0 = x
-simplificar (Prod (Valor 0) _) = Valor 0                                -- b) 0 * x = 0
-simplificar (Prod _ (Valor 0)) = Valor 0                                -- b) x * 0 = 0
-simplificar (Prod (Valor 1) e) = simplificar e                          -- c) 1 * x = x
-simplificar (Prod e (Valor 1)) = simplificar e                          -- c) x * 1 = x
-simplificar (Neg (Neg e))      = simplificar e                          -- d) -(-x) = x
-simplificar (Sum e1 e2)        = Sum (simplificar e1) (simplificar e2)
-simplificar (Prod e1 e2)       = Prod (simplificar e1) (simplificar e2)
-simplificar (Neg e)            = Neg (simplificar e)
-simplificar e                  = e                                      -- cualquier otro caso queda igual
+simplificar (Sum e1 e2)  = simplificarSuma (simplificar e1)  (simplificar e2)
+simplificar (Prod e1 e2) = simplificarProd (simplificar e1)  (simplificar e2)
+simplificar (Neg e)      = simplificarNeg (simplificar e)
+simplificar e            = e
+
+simplificarSuma :: ExpA -> ExpA -> ExpA
+simplificarSuma (Valor 0) e = e                         -- a) 0 + x = x
+simplificarSuma e (Valor 0) = e                         -- a) x + 0 = x
+simplificarSuma e a = Sum e a
+
+simplificarProd :: ExpA -> ExpA -> ExpA
+simplificarProd (Valor 0) _ = Valor 0                    -- b) 0 * x = 0
+simplificarProd _ (Valor 0) = Valor 0                    -- b) x * 0 = 0
+simplificarProd (Valor 1) e = e                          -- c) 1 * x = x
+simplificarProd e (Valor 1) = e                          -- c) x * 1 = x
+simplificarProd e a         = Prod e a
+
+simplificarNeg:: ExpA -> ExpA
+simplificarNeg (Neg e) =  e                              -- d) -(-x) = x
+simplificarNeg e       = Neg e
 
 
 
