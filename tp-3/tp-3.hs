@@ -3,6 +3,7 @@
 -- 1.1) celdas con bolitas
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Eta reduce" #-}
+{-# HLINT ignore "Use foldr" #-}
 
 data Color = Azul | Rojo                       deriving Show
 data Celda = Bolita Color Celda | CeldaVacia   deriving Show
@@ -63,9 +64,13 @@ hayTesoro (Cofre obs c) = contieneTesoro obs || hayTesoro c
 hayTesoro (Nada c)      = hayTesoro c
 
 contieneTesoro :: [Objeto] -> Bool
-contieneTesoro []       = False
-contieneTesoro (Tesoro : _)  = True
-contieneTesoro (_ : os) = contieneTesoro os
+contieneTesoro []     = False
+contieneTesoro (o:os) = esTesoro o || contieneTesoro os
+
+
+esTesoro :: Objeto -> Bool
+esTesoro Tesoro = True
+esTesoro _ = False
 
 
 caminoConTesoro         = Cofre [Cacharro, Tesoro] (Nada (Cofre [Tesoro, Cacharro] Fin))
