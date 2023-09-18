@@ -5,6 +5,7 @@
 {-# HLINT ignore "Eta reduce" #-}
 {-# HLINT ignore "Use foldr" #-}
 {-# HLINT ignore "Redundant if" #-}
+{-# HLINT ignore "Use map" #-}
 
 data Color = Azul | Rojo                       deriving Show
 data Celda = Bolita Color Celda | CeldaVacia   deriving Show
@@ -224,16 +225,11 @@ ramaMasLarga (NodeT a iz de) =
 -- 13. Dado un árbol devuelve todos los caminos, es decir, los caminos desde la raíz hasta cualquiera de los nodos.
 todosLosCaminos :: Tree a -> [[a]]
 todosLosCaminos EmptyT = []
-todosLosCaminos (NodeT a EmptyT EmptyT) = [[a]]
-todosLosCaminos (NodeT a iz de) = todosLosCaminosS [a] iz ++ todosLosCaminosS [a] de
+todosLosCaminos (NodeT a iz de) = agregarElemento a (todosLosCaminos iz ++ todosLosCaminos de)
 
-todosLosCaminosS :: [a] -> Tree a -> [[a]]
-todosLosCaminosS _ EmptyT = []
-todosLosCaminosS caminoActual (NodeT a EmptyT EmptyT) = [caminoActual ++ [a]]
-todosLosCaminosS caminoActual (NodeT a iz de) =
-  todosLosCaminosS (caminoActual ++ [a]) iz ++ todosLosCaminosS (caminoActual ++ [a]) de
-
-
+agregarElemento :: a -> [[a]] -> [[a]]
+agregarElemento a []  = [[a]]
+agregarElemento a (l:ls) = (a : l) : agregarElemento a ls 
 
 -- 2.2. Expresiones Aritméticas
 
