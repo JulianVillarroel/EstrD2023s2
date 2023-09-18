@@ -4,6 +4,7 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Eta reduce" #-}
 {-# HLINT ignore "Use foldr" #-}
+{-# HLINT ignore "Redundant if" #-}
 
 data Color = Azul | Rojo                       deriving Show
 data Celda = Bolita Color Celda | CeldaVacia   deriving Show
@@ -76,6 +77,7 @@ esTesoro _ = False
 caminoConTesoro         = Cofre [Cacharro, Tesoro] (Nada (Cofre [Tesoro, Cacharro] Fin))
 caminoConTesoroMuyLejos = Nada (Nada (Nada (Nada (Nada (Nada (Nada (Nada (Nada (Nada (Cofre [Cacharro] Fin)))))))))) -- 10 pasos hasta el cofre
 caminoSinTesoro         = Nada Fin
+caminoConVariosTesoros  = Cofre [Tesoro, Tesoro] Fin
 
 {-Indica la cantidad de pasos que hay que recorrer hasta llegar al primer cofre con un tesoro.
 Si un cofre con un tesoro está al principio del camino, la cantidad de pasos a recorrer es 0.
@@ -83,7 +85,7 @@ Precondición: tiene que haber al menos un tesoro.
 -}
 pasosHastaTesoro :: Camino -> Int
 pasosHastaTesoro Fin                     = error "No hay tesoro"
-pasosHastaTesoro (Cofre objetos camino)  = 
+pasosHastaTesoro (Cofre objetos camino)  =
   if contieneTesoro objetos
     then 0
     else 1 + pasosHastaTesoro camino
@@ -102,7 +104,9 @@ alMenosNTesoros :: Int -> Camino -> Bool
 alMenosNTesoros 0 _             = True
 alMenosNTesoros n Fin           = False
 alMenosNTesoros n (Cofre obs c) =
-  alMenosNTesoros (n - contarTesorosEnLista obs) c
+  if n <= contarTesorosEnLista obs
+    then True 
+    else  alMenosNTesoros (n - contarTesorosEnLista obs) c
 alMenosNTesoros n (Nada c)      = alMenosNTesoros n c
 
 contarTesorosEnLista :: [Objeto] -> Int
