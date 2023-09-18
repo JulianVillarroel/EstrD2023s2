@@ -92,13 +92,10 @@ pasosHastaTesoro (Nada resto)            = 1 + pasosHastaTesoro resto
 -- Indica si hay un tesoro en una cierta cantidad exacta de pasos. Por ejemplo, si el número de
 -- pasos es 5, indica si hay un tesoro en 5 pasos.
 hayTesoroEn :: Int -> Camino -> Bool
-hayTesoroEn n camino = hayTesoroEnAux n camino 0
-
-hayTesoroEnAux :: Int -> Camino -> Int -> Bool
-hayTesoroEnAux 0 (Cofre obs _) _   = contieneTesoro obs
-hayTesoroEnAux n (Cofre _ c) pasos = hayTesoroEnAux (n - 1) c (pasos + 1)
-hayTesoroEnAux n (Nada c) pasos    = hayTesoroEnAux n c (pasos + 1)
-hayTesoroEnAux _ Fin _             = False
+hayTesoroEn 0 (Cofre obs _)  = contieneTesoro obs
+hayTesoroEn n (Cofre _ c) = hayTesoroEn (n - 1) c
+hayTesoroEn n (Nada c) = hayTesoroEn (n - 1) c
+hayTesoroEn _ _        = False
 
 -- Indica si hay al menos n tesoros en el camino.
 alMenosNTesoros :: Int -> Camino -> Bool
