@@ -82,9 +82,12 @@ Si un cofre con un tesoro está al principio del camino, la cantidad de pasos a 
 Precondición: tiene que haber al menos un tesoro.
 -}
 pasosHastaTesoro :: Camino -> Int
-pasosHastaTesoro Fin          = error "No hay tesoro"
-pasosHastaTesoro (Cofre _ _)  = 0
-pasosHastaTesoro (Nada resto) = 1 + pasosHastaTesoro resto
+pasosHastaTesoro Fin                     = error "No hay tesoro"
+pasosHastaTesoro (Cofre objetos camino)  = 
+  if contieneTesoro objetos
+    then 0
+    else 1 + pasosHastaTesoro camino
+pasosHastaTesoro (Nada resto)            = 1 + pasosHastaTesoro resto
 
 -- Indica si hay un tesoro en una cierta cantidad exacta de pasos. Por ejemplo, si el número de
 -- pasos es 5, indica si hay un tesoro en 5 pasos.
