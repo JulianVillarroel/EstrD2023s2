@@ -11,26 +11,33 @@
 
 
 head' :: [a] -> a
-head' (x:xs) = x --O(1)
+head' (x:xs) = x -- debido a que no importa la longitud de la lista siempre da le primer elemento el costo es: O(1)
 
 sumar :: Int -> Int 
-sumar x = x + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 --O(1)
+sumar x = x + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 -- no importa el valor de x, siempre hace las mismas operaciones O(1)
 
 factorial :: Int -> Int
-factorial 0 = 1    
-factorial n = n * factorial (n-1) --O(n)
+factorial 0 = 1 
+factorial n = n * factorial (n-1) -- mirentras mas grande sea el valor de n mas operaciones realizara, por lo cual su costo es O(n)
 
 longitud :: [a] -> Int
 longitud []     = 0
-longitud (x:xs) = 1 + longitud xs --O(n)
+longitud (x:xs) = 1 + longitud xs -- el costo es O(n) ya que se realiza la operacion en cada elemento de la lista 
 
 factoriales :: [Int] -> [Int]
-factoriales []     = []
-factoriales (x:xs) = factorial x : factoriales xs --O(n^2)
+factoriales []     = [] -- O(1)
+factoriales (x:xs) = factorial x : factoriales xs
+                      --O(n)           O(n)
+
+    -- O(1) + (O(n) * O(n)) =  O(1) + O(n^2) = O(n^2)
 
 pertenece :: Eq a => a -> [a] -> Bool
-pertenece n []     = False
-pertenece n (x:xs) = n == x || pertenece n xs --O(n)
+pertenece n []     = False -- 0(1)
+pertenece n (x:xs) = n == x || pertenece n xs 
+                    -- O(n) 
+
+        -- O(1) + O(n) = O(n)   seria O(n) en el peor de los casos
+
 
 sinRepetidos :: Eq a => [a] -> [a]
 sinRepetidos []     = []
