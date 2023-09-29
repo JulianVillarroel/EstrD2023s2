@@ -13,7 +13,7 @@
 head' :: [a] -> a
 head' (x:xs) = x --O(1)
 
-sumar :: Int -> Int
+sumar :: Int -> Int 
 sumar x = x + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 --O(1)
 
 factorial :: Int -> Int
@@ -82,11 +82,11 @@ ordenar xs =
 -- 2. Set (conjunto)
 -- Un Set es un tipo abstracto de datos que consta de las siguientes operaciones:
 
-data Set a = Set [a]
+data Set a = S [a] deriving Show
  
 -- Crea un conjunto vacío.
 emptyS :: Set a
-emptyS = Set[]
+emptyS = S[]
 
 -- Dados un elemento y un conjunto, agrega el elemento al conjunto.
 --addS :: Eq a => a -> Set a -> Set a
